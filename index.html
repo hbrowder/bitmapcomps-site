@@ -98,6 +98,20 @@ tbody tr{border-top:1px solid #23252B}
 .rc-links{display:flex;flex-wrap:wrap;gap:16px;font-size:15px;margin-top:6px}
 .rc-links button{background:none;border:0;color:var(--acc);font:inherit;cursor:pointer;padding:0;text-decoration:underline}
 .err{margin-top:20px;color:#FFB65C}
+.wl-sum{margin-top:28px}
+.wl-sum .nums{margin-top:0;border-top:0}
+.wl-sum .rc-head .rc-name{font-size:clamp(22px,3.4vw,30px);word-break:break-all}
+.wl-tbl{width:100%;min-width:0;border-collapse:collapse;font-size:15px}
+.wl-tbl th,.wl-tbl td{padding:10px 14px;border-top:1px solid #23252B;text-align:right;white-space:nowrap}
+.wl-tbl th:first-child,.wl-tbl td:first-child{text-align:left}
+.wl-tbl thead th{background:#1C1E23;color:var(--mute);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500}
+.wl-tbl td{font-family:"JetBrains Mono",monospace;color:#CFCAC0}
+.wl-tbl td.l{font-family:"Space Grotesk",sans-serif;color:var(--text);text-align:left}
+.wl-tbl th.l{text-align:left}
+.wl-h{font:700 13px "JetBrains Mono",monospace;letter-spacing:.12em;color:var(--acc);margin:22px 24px 10px}
+.wl-box{overflow-x:auto;margin:0 0 4px}
+.wl-loading{margin-top:22px;color:var(--mute)}
+@media (max-width:760px){.wl-h{margin-left:20px;margin-right:20px}.wl-tbl .hide-m{display:none}.wl-tbl th,.wl-tbl td{padding:9px 10px}}
 footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--mute);font-size:14px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 @media (max-width:760px){
@@ -128,10 +142,22 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
   <div class="kicker">BITCOIN BITMAP APPRAISALS</div>
   <h1>Priced by comps,<br>not floors.</h1>
   <p class="lead">Your bitmaps aren't worth the floor. We price each block by its traits (sub-1K, Patoshi, pizza, punks, year) using what comparable blocks actually sold for.</p>
-  <div class="ctas"><a class="btn" href="#lookup">Look up a bitmap</a><a class="btn ghost" href="#index">See this week's Land Index</a></div>
+  <div class="ctas"><a class="btn" href="#wallet">Appraise your wallet</a><a class="btn ghost" href="#lookup">Look up one bitmap</a></div>
  </div>
  <svg xmlns="http://www.w3.org/2000/svg" class="seal" role="img" aria-label="BitmapComps appraised seal" viewBox="0 0 400 400"><defs><linearGradient id="g24b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFB65C"/><stop offset=".45" stop-color="#F7931A"/><stop offset="1" stop-color="#C8700F"/></linearGradient></defs><rect width="400" height="400" fill="#0D0E11"/><path d="M200.0 12.0L216.1 26.7L234.5 15.2L247.6 32.6L267.9 24.7L277.6 44.2L299.0 40.2L304.9 61.1L326.7 61.1L328.6 82.8L350.0 86.7L347.9 108.4L368.3 116.2L362.3 137.1L380.8 148.6L371.0 168.0L387.2 182.7L374.0 200.0L387.2 217.3L371.0 232.0L380.8 251.4L362.3 262.9L368.3 283.8L347.9 291.6L350.0 313.3L328.6 317.2L326.7 338.9L304.9 338.9L299.0 359.8L277.6 355.8L267.9 375.3L247.6 367.4L234.5 384.8L216.1 373.3L200.0 388.0L183.9 373.3L165.5 384.8L152.4 367.4L132.1 375.3L122.4 355.8L101.0 359.8L95.1 338.9L73.3 338.9L71.4 317.2L50.0 313.3L52.1 291.6L31.7 283.8L37.7 262.9L19.2 251.4L29.0 232.0L12.8 217.3L26.0 200.0L12.8 182.7L29.0 168.0L19.2 148.6L37.7 137.1L31.7 116.2L52.1 108.4L50.0 86.7L71.4 82.8L73.3 61.1L95.1 61.1L101.0 40.2L122.4 44.2L132.1 24.7L152.4 32.6L165.5 15.2L183.9 26.7L200.0 12.0Z" fill="url(#g24b)"/><circle cx="200" cy="200" r="160" fill="none" stroke="#0D0E11" stroke-width="5"/><circle cx="200" cy="200" r="106" fill="#0D0E11"/><circle cx="200" cy="200" r="94" fill="none" stroke="url(#g24b)" stroke-width="3"/><defs><path id="a25" d="M 76 200 A 124 124 0 0 1 324 200"/><path id="b26" d="M 78 200 A 122 122 0 0 0 322 200"/></defs><text fill="#0D0E11" font-family="Space Grotesk, system-ui, sans-serif" font-weight="700" font-size="30" letter-spacing="3" text-anchor="middle"><textPath href="#a25" startOffset="50%">BITMAP COMPS</textPath></text><text fill="#0D0E11" font-family="Space Grotesk, system-ui, sans-serif" font-weight="700" font-size="25.8" letter-spacing="3" text-anchor="middle" dominant-baseline="hanging"><textPath href="#b26" startOffset="50%">APPRAISED</textPath></text><rect x="61" y="195" width="10" height="10" fill="#0D0E11"/><rect x="329" y="195" width="10" height="10" fill="#0D0E11"/><rect x="148" y="148" width="30" height="30" rx="3" fill="url(#g24b)"/><rect x="185" y="148" width="30" height="30" rx="3" fill="url(#g24b)"/><rect x="222" y="148" width="30" height="30" rx="3" fill="#3A3C42"/><rect x="148" y="185" width="30" height="30" rx="3" fill="url(#g24b)"/><rect x="185" y="185" width="30" height="30" rx="3" fill="#3A3C42"/><rect x="222" y="185" width="30" height="30" rx="3" fill="url(#g24b)"/><rect x="148" y="222" width="30" height="30" rx="3" fill="#3A3C42"/><rect x="185" y="222" width="30" height="30" rx="3" fill="url(#g24b)"/><rect x="222" y="222" width="30" height="30" rx="3" fill="url(#g24b)"/></svg>
 </div>
+
+<section id="wallet"><div class="wrap">
+ <div class="kicker">APPRAISE A WALLET</div>
+ <h2>What are your bitmaps worth?</h2>
+ <p class="sub">Paste a Bitcoin address. We find every valid bitmap it holds, read its traits, and price it with this week's real sales. Read-only: no wallet connection, nothing to sign.</p>
+ <form id="wl-form" class="lk-form" autocomplete="off">
+  <label for="wl-in" class="sr">Bitcoin address</label>
+  <div class="lk-field"><input id="wl-in" placeholder="bc1p… address that holds your bitmaps" maxlength="100" spellcheck="false" autocapitalize="off"></div>
+  <button class="btn" type="submit">Appraise wallet</button>
+ </form>
+ <div id="wl-out" aria-live="polite"></div>
+</div></section>
 
 <section id="lookup"><div class="wrap">
  <div class="kicker">APPRAISE A BITMAP</div>
@@ -165,7 +191,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 </div></section>
 
 <section><div class="wrap">
- <div class="kicker">HOW IT WILL WORK</div>
+ <div class="kicker">HOW IT WORKS</div>
  <h2>Three honest numbers for your wallet</h2>
  <div class="steps">
   <div class="card"><div class="n">01</div><h3>Paste an address</h3><p>Read-only. No wallet connection and nothing to sign.</p></div>
@@ -175,11 +201,11 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 </div></section>
 
 <section><div class="wrap soon">
- <div><div class="kicker">COMING SOON</div><h2 style="margin-bottom:6px">Wallet appraisals</h2><p class="sub" style="margin:0">Built by a holder. Follow along for the weekly Land Index and the launch.</p></div>
+ <div><div class="kicker">EVERY WEEK</div><h2 style="margin-bottom:6px">The Bitmap Land Index</h2><p class="sub" style="margin:0">Built by a holder. Follow along for weekly prices, notable sales and new tools.</p></div>
  <a class="btn" href="https://x.com/BitmapComps" rel="noopener">Follow @BitmapComps</a>
 </div></section>
 </main>
-<footer><div class="wrap"><span>© 2026 BitmapComps · Not financial advice.</span><span>Sales data: <a href="https://www.satflow.com/ordinals/bitmap" rel="noopener">Satflow</a></span></div></footer>
+<footer><div class="wrap"><span>© 2026 BitmapComps · Not financial advice.</span><span>Sales data: <a href="https://www.satflow.com/ordinals/bitmap" rel="noopener">Satflow</a> · Ownership &amp; traits: <a href="https://ordinalswallet.com/collection/bitmap" rel="noopener">Ordinals Wallet</a> index</span></div></footer>
 <script>
 (function(){
 // Last block mined before Jan 1 (UTC) of each year, from mempool.space.
@@ -194,7 +220,9 @@ var TIERS={
  y2010:{name:'2010',bid:[0.0001],sold:[0.0001,0.0003],ask:[0.00017]},
  y2011:{name:'2011–2012',bid:[0.0001],sold:[0.00012],ask:[0.00015]},
  y2013:{name:'2013–2023',bid:[0.00008],sold:[0.0001],ask:[0.00008,0.00013]},
- y2024:{name:'2024 and later',bid:[0.00008],sold:[0.0001],ask:[0.00008,0.00013]}
+ y2024:{name:'2024 and later',bid:[0.00008],sold:[0.0001],ask:[0.00008,0.00013]},
+ pizza:{name:'Pizza',bid:[0.0018],sold:[0.0024],ask:null},
+ punks:{name:'Punks',bid:null,sold:[0.0004,0.0006],ask:null}
 };
 var tip=null,usd=null;
 var $=function(id){return document.getElementById(id)};
@@ -274,6 +302,77 @@ function go(v,push){
  if(push!==false)try{history.replaceState(null,'','?b='+h+'#lookup')}catch(e){}
 }
 
+// ---------- Wallet appraisal ----------
+var API='https://bitmapcomps-api.browderharold.workers.dev';
+var wout=$('wl-out'),win=$('wl-in');
+var ORDER=['genesis','sub1k','pizza','y2009_4','y2009_5','punks','y2010','y2011','y2013','y2024'];
+function walletTier(h,t){
+ if(h===0)return 'genesis';
+ if(h<1000)return 'sub1k';
+ if(t.pizza==='true')return 'pizza';
+ var y=yearOf(h);
+ if(y===2009)return h<10000?'y2009_4':'y2009_5';
+ if(t.punks)return 'punks';
+ return tierOf(h,y);
+}
+function baseTier(h){var y=yearOf(h);return tierOf(h,y)}
+// A tier with no data for a column falls back to the plain tier for the block's year.
+function val(h,tk,col,pick){var T=TIERS[tk],B=TIERS[baseTier(h)],r=T[col];
+ if(!r)r=col==='ask'?(T.sold||B.ask):(B[col]||B.sold);
+ if(!r)return 0;return pick==='hi'?(r[1]||r[0]):r[0]}
+function sumFmt(x){return x>=0.01?x.toFixed(3):x.toFixed(4)}
+function usdOf(x){return usd?'≈ $'+Math.round(x*usd).toLocaleString():''}
+function traitLabels(h,t){var L=[];if(h<1000)L.push('Sub-1K');if(t.patoshi==='true')L.push('Patoshi');if(t.pizza==='true')L.push('Pizza');if(t.punks)L.push(t.punks.replace(/Punks$/,' punks'));if(t.vintage==='true'&&h>=1000)L.push('Vintage');return L}
+
+function renderWallet(d){
+ var items=d.bitmaps.map(function(b){var tk=walletTier(b.h,b.t||{});return {h:b.h,t:b.t||{},tk:tk}});
+ if(!items.length){wout.innerHTML='<div class="rc wl-sum"><div class="rc-body"><p>No valid bitmaps found at this address. It holds '+d.totalInscriptions+' inscription'+(d.totalInscriptions===1?'':'s')+'. If your bitmaps sit in another address (many wallets use a separate Ordinals address starting with bc1p), try that one.</p></div></div>';return}
+ var lo=0,sl=0,sh=0,ak=0,byTier={},special=[];
+ items.forEach(function(it){
+  if(it.tk==='genesis')return;
+  lo+=val(it.h,it.tk,'bid');sl+=val(it.h,it.tk,'sold');sh+=val(it.h,it.tk,'sold','hi');ak+=val(it.h,it.tk,'ask');
+  var g=byTier[it.tk]=byTier[it.tk]||{n:0,lo:0,hi:0};g.n++;g.lo+=val(it.h,it.tk,'sold');g.hi+=val(it.h,it.tk,'sold','hi');
+  var L=traitLabels(it.h,it.t);if(L.length||it.h<10000)special.push({h:it.h,L:L,tk:it.tk});
+ });
+ var sales=Math.abs(sh-sl)<1e-9?sumFmt(sl):sumFmt(sl)+'–'+sumFmt(sh);
+ var salesUsd=usd?(Math.abs(sh-sl)<1e-9?usdOf(sl):'≈ $'+Math.round(sl*usd).toLocaleString()+'–$'+Math.round(sh*usd).toLocaleString()):'';
+ var h='<div class="rc wl-sum"><div class="rc-head"><div><h3 class="rc-name">'+items.length+' bitmap'+(items.length===1?'':'s')+'</h3><div class="rc-meta">'+esc(d.address.slice(0,10)+'…'+d.address.slice(-6))+' · '+d.totalInscriptions+' inscriptions in total</div></div><span class="rc-tier">APPRAISED</span></div>';
+ h+='<div class="nums"><div class="num"><div class="l">Sell now (top bids)</div><div><div class="v">'+sumFmt(lo)+' <span class="b">₿</span></div><div class="u">'+usdOf(lo)+'</div></div></div>'
+  +'<div class="num main"><div class="l">Recent sales</div><div><div class="v">'+sales+' <span class="b">₿</span></div><div class="u">'+salesUsd+'</div></div></div>'
+  +'<div class="num"><div class="l">Cheapest asks</div><div><div class="v">'+sumFmt(ak)+' <span class="b">₿</span></div><div class="u">'+usdOf(ak)+'</div></div></div></div>';
+ if(special.length){
+  special.sort(function(a,b){return ORDER.indexOf(a.tk)-ORDER.indexOf(b.tk)||a.h-b.h});
+  h+='<div class="wl-h">STANDOUTS</div><div class="wl-box"><table class="wl-tbl"><thead><tr><th>Bitmap</th><th class="l hide-m">Traits</th><th class="l">Tier</th><th>Recent sales</th></tr></thead><tbody>';
+  special.slice(0,25).forEach(function(s){var r=TIERS[s.tk].sold||TIERS[baseTier(s.h)].sold;h+='<tr><td class="l"><a href="?b='+s.h+'#lookup">'+s.h+'.bitmap</a></td><td class="l hide-m">'+(s.L.join(', ')||'—')+'</td><td class="l">'+TIERS[s.tk].name+'</td><td>'+btc(r)+'</td></tr>'});
+  h+='</tbody></table></div>';
+  if(special.length>25)h+='<p class="note" style="margin:6px 24px 0">+'+(special.length-25)+' more in the CSV.</p>';
+ }
+ h+='<div class="wl-h">BY TIER</div><div class="wl-box"><table class="wl-tbl"><thead><tr><th>Tier</th><th>Count</th><th>Recent sales</th></tr></thead><tbody>';
+ ORDER.forEach(function(k){var g=byTier[k];if(!g)return;h+='<tr><td class="l">'+TIERS[k].name+'</td><td>'+g.n+'</td><td>'+(Math.abs(g.hi-g.lo)<1e-9?sumFmt(g.lo):sumFmt(g.lo)+'–'+sumFmt(g.hi))+'</td></tr>'});
+ h+='</tbody></table></div>';
+ var patoshiOut=items.filter(function(i){return i.t.patoshi==='true'&&i.h>=1000}).length;
+ h+='<div class="rc-body" style="padding-top:14px">';
+ if(patoshiOut)h+='<p class="warn">'+patoshiOut+' Patoshi block'+(patoshiOut===1?'':'s')+' outside sub-1K '+(patoshiOut===1?'is':'are')+' priced at the regular tier for '+(patoshiOut===1?'its':'their')+' year. Patoshi can sell for more; we don\'t have enough sales yet to price the premium.</p>';
+ h+='<p>Only valid bitmaps count. If you inscribed a block number after someone else, that copy isn\'t a bitmap and isn\'t included. Tier prices, not offers on your exact blocks. Punks and 4-digit 2009 blocks have no reliable bid or ask yet, so those fall back to their year\'s plain prices.</p>';
+ h+='<div class="rc-links"><button type="button" id="wl-csv">Download CSV of every bitmap</button><button type="button" id="wl-share">Copy link to this appraisal</button></div>';
+ h+='<p class="note" style="margin-top:14px">Prices: Satflow, '+AS_OF+'. Ownership and traits: Ordinals Wallet index, '+new Date(d.fetchedAt).toLocaleString()+'. Not financial advice.</p></div></div>';
+ wout.innerHTML=h;
+ $('wl-csv').onclick=function(){var rows=[['bitmap','year','tier','traits','top_bid_btc','recent_sales_btc','cheapest_ask_btc']];items.forEach(function(it){var tk=it.tk;rows.push([it.h+'.bitmap',yearOf(it.h),TIERS[tk].name,traitLabels(it.h,it.t).join(' '),tk==='genesis'?'':val(it.h,tk,'bid'),tk==='genesis'?'':btc(TIERS[tk].sold||TIERS[baseTier(it.h)].sold),tk==='genesis'?'':val(it.h,tk,'ask')])});var csv=rows.map(function(r){return r.join(',')}).join('\n');var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='bitmapcomps-'+d.address.slice(-6)+'.csv';document.body.appendChild(a);a.click();a.remove()};
+ $('wl-share').onclick=function(){var u=location.origin+location.pathname+'?w='+d.address+'#wallet';(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){$('wl-share').textContent='Link copied'},function(){$('wl-share').textContent=u})};
+}
+
+function goWallet(a,push){
+ a=String(a||'').trim();
+ if(!/^(bc1[02-9ac-hj-np-z]{11,87}|[13][1-9A-HJ-NP-Za-km-z]{25,34})$/i.test(a)){wout.innerHTML='<p class="err">Paste a Bitcoin address, like bc1p…</p>';return}
+ win.value=a;wout.innerHTML='<p class="wl-loading">Reading every inscription at this address…</p>';
+ fetch(API+'/wallet?address='+encodeURIComponent(a)).then(function(r){return r.json()}).then(function(d){
+  if(d.error){wout.innerHTML='<p class="err">'+esc(d.error)+'</p>';return}
+  renderWallet(d);
+  if(push!==false)try{history.replaceState(null,'','?w='+a+'#wallet')}catch(e){}
+ }).catch(function(){wout.innerHTML='<p class="err">Couldn\'t reach the appraisal service. Try again in a minute.</p>'});
+}
+$('wl-form').addEventListener('submit',function(e){e.preventDefault();goWallet(win.value)});
+
 $('lk-form').addEventListener('submit',function(e){e.preventDefault();go(inp.value)});
 document.querySelectorAll('.lk-try button').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.b)})});
 
@@ -281,6 +380,8 @@ Promise.all([
  fetch('https://mempool.space/api/blocks/tip/height').then(function(r){return r.text()}).then(function(t){tip=parseInt(t,10)||null}).catch(function(){}),
  fetch('https://mempool.space/api/v1/prices').then(function(r){return r.json()}).then(function(p){usd=p.USD||null}).catch(function(){})
 ]).then(function(){
+ var w=new URLSearchParams(location.search).get('w');
+ if(w){goWallet(w,false);var sw=$('wallet');sw&&sw.scrollIntoView()}
  var q=new URLSearchParams(location.search).get('b');
  if(q!==null){go(q,false);var s=$('lookup');s&&s.scrollIntoView()}
  else if(out.firstChild&&inp.value)go(inp.value,false);
