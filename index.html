@@ -55,6 +55,39 @@ tbody tr{border-top:1px solid #23252B}
 .card h3{margin:8px 0 8px;font-size:21px}
 .card p{margin:0;color:#CFCAC0;font-size:16px}
 .soon{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.b{font-family:"DejaVu Sans","Segoe UI Symbol",sans-serif}
+.lk-form{display:flex;gap:12px;flex-wrap:wrap;max-width:620px}
+.lk-field{flex:1 1 280px;display:flex;align-items:center;background:var(--panel);border:1px solid #3A3C42;border-radius:12px;padding:0 16px;min-height:52px}
+.lk-field:focus-within{border-color:var(--acc)}
+.lk-field input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--text);font:700 20px "JetBrains Mono",monospace;padding:12px 0}
+.lk-field input::placeholder{color:#6E6B65;font-weight:500;font-size:16px}
+.lk-suffix{font-family:"JetBrains Mono",monospace;color:var(--mute);font-size:16px}
+.lk-form .btn{border:0;font:inherit;font-weight:700;cursor:pointer;min-height:52px;padding:0 26px}
+.lk-try{margin-top:12px;font-size:14px;color:var(--mute);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lk-try button{background:transparent;border:1px solid #3A3C42;color:#CFCAC0;border-radius:999px;padding:4px 12px;font:500 14px "JetBrains Mono",monospace;cursor:pointer}
+.lk-try button:hover{border-color:var(--acc);color:var(--text)}
+#lk-out:empty{display:none}
+.rc{margin-top:28px;background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.rc-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:16px;padding:24px 24px 18px;border-bottom:1px solid var(--line)}
+.rc-name{font:700 clamp(28px,5vw,40px)/1.1 "JetBrains Mono",monospace;margin:0}
+.rc-meta{color:var(--mute);font-size:15px;margin-top:6px}
+.rc-tier{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.1em;color:var(--acc);border:1px solid var(--acc);border-radius:999px;padding:5px 12px;white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:16px 24px 0}
+.chip{font-size:14px;background:#22242A;border:1px solid #33353C;border-radius:999px;padding:4px 12px;color:#DDD8CE}
+.chip.hot{border-color:var(--acc);color:var(--text)}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);margin:18px 0 0;border-top:1px solid var(--line)}
+.num{background:var(--panel);padding:20px 24px}
+.num .l{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.num .v{font:700 24px "JetBrains Mono",monospace;margin-top:6px}
+.num .u{font-size:15px;color:var(--mute);margin-top:2px}
+.num.main .v{color:var(--acc)}
+.rc-body{padding:18px 24px 22px;font-size:16px;color:#CFCAC0}
+.rc-body p{margin:0 0 10px}
+.rc-body .warn{border-left:3px solid var(--acc);padding:4px 0 4px 12px;margin:14px 0}
+.rc-links{display:flex;flex-wrap:wrap;gap:16px;font-size:15px;margin-top:6px}
+.rc-links button{background:none;border:0;color:var(--acc);font:inherit;cursor:pointer;padding:0;text-decoration:underline}
+.err{margin-top:20px;color:#FFB65C}
 footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--mute);font-size:14px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 @media (max-width:760px){
@@ -66,6 +99,11 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
  .steps{grid-template-columns:1fr}
  header .btn span.long{display:none}
  .brand{font-size:18px}
+ .nums{grid-template-columns:1fr}
+ .num{padding:14px 20px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+ .num .v{margin-top:0;font-size:20px}
+ .rc-head,.rc-body{padding-left:20px;padding-right:20px}
+ .chips{padding-left:20px;padding-right:20px}
 }
 </style>
 </head>
@@ -80,10 +118,23 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
   <div class="kicker">BITCOIN BITMAP APPRAISALS</div>
   <h1>Priced by comps,<br>not floors.</h1>
   <p class="lead">Your bitmaps aren't worth the floor. We price each block by its traits (sub-1K, Patoshi, pizza, punks, year) using what comparable blocks actually sold for.</p>
-  <div class="ctas"><a class="btn" href="#index">See this week's Land Index</a><a class="btn ghost" href="https://x.com/BitmapComps" rel="noopener">Follow for updates</a></div>
+  <div class="ctas"><a class="btn" href="#lookup">Look up a bitmap</a><a class="btn ghost" href="#index">See this week's Land Index</a></div>
  </div>
  <svg xmlns="http://www.w3.org/2000/svg" class="seal" role="img" aria-label="BitmapComps appraised seal" viewBox="0 0 400 400"><defs><linearGradient id="g24b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFB65C"/><stop offset=".45" stop-color="#F7931A"/><stop offset="1" stop-color="#C8700F"/></linearGradient></defs><rect width="400" height="400" fill="#0D0E11"/><path d="M200.0 12.0L216.1 26.7L234.5 15.2L247.6 32.6L267.9 24.7L277.6 44.2L299.0 40.2L304.9 61.1L326.7 61.1L328.6 82.8L350.0 86.7L347.9 108.4L368.3 116.2L362.3 137.1L380.8 148.6L371.0 168.0L387.2 182.7L374.0 200.0L387.2 217.3L371.0 232.0L380.8 251.4L362.3 262.9L368.3 283.8L347.9 291.6L350.0 313.3L328.6 317.2L326.7 338.9L304.9 338.9L299.0 359.8L277.6 355.8L267.9 375.3L247.6 367.4L234.5 384.8L216.1 373.3L200.0 388.0L183.9 373.3L165.5 384.8L152.4 367.4L132.1 375.3L122.4 355.8L101.0 359.8L95.1 338.9L73.3 338.9L71.4 317.2L50.0 313.3L52.1 291.6L31.7 283.8L37.7 262.9L19.2 251.4L29.0 232.0L12.8 217.3L26.0 200.0L12.8 182.7L29.0 168.0L19.2 148.6L37.7 137.1L31.7 116.2L52.1 108.4L50.0 86.7L71.4 82.8L73.3 61.1L95.1 61.1L101.0 40.2L122.4 44.2L132.1 24.7L152.4 32.6L165.5 15.2L183.9 26.7L200.0 12.0Z" fill="url(#g24b)"/><circle cx="200" cy="200" r="160" fill="none" stroke="#0D0E11" stroke-width="5"/><circle cx="200" cy="200" r="106" fill="#0D0E11"/><circle cx="200" cy="200" r="94" fill="none" stroke="url(#g24b)" stroke-width="3"/><defs><path id="a25" d="M 76 200 A 124 124 0 0 1 324 200"/><path id="b26" d="M 78 200 A 122 122 0 0 0 322 200"/></defs><text fill="#0D0E11" font-family="Space Grotesk, system-ui, sans-serif" font-weight="700" font-size="30" letter-spacing="3" text-anchor="middle"><textPath href="#a25" startOffset="50%">BITMAP COMPS</textPath></text><text fill="#0D0E11" font-family="Space Grotesk, system-ui, sans-serif" font-weight="700" font-size="25.8" letter-spacing="3" text-anchor="middle" dominant-baseline="hanging"><textPath href="#b26" startOffset="50%">APPRAISED</textPath></text><rect x="61" y="195" width="10" height="10" fill="#0D0E11"/><rect x="329" y="195" width="10" height="10" fill="#0D0E11"/><rect x="148" y="148" width="30" height="30" rx="3" fill="url(#g24b)"/><rect x="185" y="148" width="30" height="30" rx="3" fill="url(#g24b)"/><rect x="222" y="148" width="30" height="30" rx="3" fill="#3A3C42"/><rect x="148" y="185" width="30" height="30" rx="3" fill="url(#g24b)"/><rect x="185" y="185" width="30" height="30" rx="3" fill="#3A3C42"/><rect x="222" y="185" width="30" height="30" rx="3" fill="url(#g24b)"/><rect x="148" y="222" width="30" height="30" rx="3" fill="#3A3C42"/><rect x="185" y="222" width="30" height="30" rx="3" fill="url(#g24b)"/><rect x="222" y="222" width="30" height="30" rx="3" fill="url(#g24b)"/></svg>
 </div>
+
+<section id="lookup"><div class="wrap">
+ <div class="kicker">APPRAISE A BITMAP</div>
+ <h2>What is your block worth?</h2>
+ <p class="sub">Enter a bitmap number. We read its traits and match it to what comparable blocks actually sold for this week.</p>
+ <form id="lk-form" class="lk-form" autocomplete="off">
+  <label for="lk-in" class="sr">Bitmap number</label>
+  <div class="lk-field"><input id="lk-in" inputmode="numeric" placeholder="e.g. 657 or 14780.bitmap" maxlength="20"><span class="lk-suffix">.bitmap</span></div>
+  <button class="btn" type="submit">Appraise</button>
+ </form>
+ <div class="lk-try">Try: <button type="button" data-b="657">657</button><button type="button" data-b="14780">14780</button><button type="button" data-b="77777">77777</button><button type="button" data-b="250000">250000</button></div>
+ <div id="lk-out" aria-live="polite"></div>
+</div></section>
 
 <section id="index"><div class="wrap">
  <div class="kicker">BITMAP LAND INDEX · OCT 1–7, 2026</div>
@@ -119,5 +170,112 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 </div></section>
 </main>
 <footer><div class="wrap"><span>© 2026 BitmapComps · Not financial advice.</span><span>Sales data: <a href="https://www.satflow.com/ordinals/bitmap" rel="noopener">Satflow</a></span></div></footer>
+<script>
+(function(){
+// Last block mined before Jan 1 (UTC) of each year, from mempool.space.
+var YEAR_END={2009:32489,2010:100409,2011:160036,2012:214562,2013:277995,2014:336860,2015:391181,2016:446032,2017:501960,2018:556458,2019:610690,2020:663912,2021:716598,2022:769786,2023:823785,2024:877258,2025:930340};
+var AS_OF='Oct 1–7, 2026';
+// Tier prices in BTC from Satflow sales, bids and listings. [low, high] ranges; null = no data that week.
+var TIERS={
+ genesis:{name:'Genesis block',bid:null,sold:null,ask:null},
+ sub1k:{name:'Sub-1K',bid:[0.0042],sold:[0.0065,0.0195],ask:[0.0100]},
+ y2009_4:{name:'2009, 4-digit',bid:null,sold:[0.001,0.002],ask:null},
+ y2009_5:{name:'2009, 5-digit',bid:[0.00017],sold:[0.0005],ask:[0.00034]},
+ y2010:{name:'2010',bid:[0.0001],sold:[0.0001,0.0003],ask:[0.00017]},
+ y2011:{name:'2011–2012',bid:[0.0001],sold:[0.00012],ask:[0.00015]},
+ y2013:{name:'2013–2023',bid:[0.00008],sold:[0.0001],ask:[0.00008,0.00013]},
+ y2024:{name:'2024 and later',bid:[0.00008],sold:[0.0001],ask:[0.00008,0.00013]}
+};
+var tip=null,usd=null;
+var $=function(id){return document.getElementById(id)};
+var out=$('lk-out'),inp=$('lk-in');
+
+function yearOf(h){for(var y=2009;y<=2025;y++){if(h<=YEAR_END[y])return y}return 2026}
+function tierOf(h,y){
+ if(h===0)return 'genesis';
+ if(h<1000)return 'sub1k';
+ if(y===2009)return h<10000?'y2009_4':'y2009_5';
+ if(y===2010)return 'y2010';
+ if(y<=2012)return 'y2011';
+ if(y<=2023)return 'y2013';
+ return 'y2024';
+}
+function patterns(h){
+ var s=String(h),p=[];
+ if(s.length>=2&&/^(\d)\1+$/.test(s))p.push('Repeating digits');
+ else if(s.length>=3&&s===s.split('').reverse().join(''))p.push('Palindrome');
+ if(s.length>=4&&/000$/.test(s))p.push('Round number');
+ if(s.length>=3){var up=true,dn=true;for(var i=1;i<s.length;i++){if(+s[i]!==+s[i-1]+1)up=false;if(+s[i]!==+s[i-1]-1)dn=false}if(up||dn)p.push('Sequential digits')}
+ return p;
+}
+function subBucket(h){if(h<10)return 'Sub-10';if(h<100)return 'Sub-100';if(h<1000)return 'Sub-1K';if(h<10000)return 'Sub-10K';if(h<100000)return 'Sub-100K';return null}
+function fmt(n){return n>=0.001?n.toFixed(4).replace(/0+$/,'').replace(/\.$/,''):n.toFixed(5).replace(/0+$/,'')}
+function btc(r){if(!r)return '—';return r.length>1?fmt(r[0])+'–'+fmt(r[1]):fmt(r[0])}
+function dollars(r){if(!r||!usd)return '';var a=r[0]*usd,b=(r[1]||r[0])*usd;var f=function(x){return '$'+(x>=100?Math.round(x).toLocaleString():x.toFixed(2))};return '≈ '+(r.length>1?f(a)+'–'+f(b):f(a))}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+function parse(v){var m=String(v).trim().toLowerCase().replace(/[,\s]/g,'').match(/^#?(\d{1,7})(\.bitmap)?$/);return m?parseInt(m[1],10):null}
+
+function num(label,r,main){return '<div class="num'+(main?' main':'')+'"><div class="l">'+label+'</div><div><div class="v">'+btc(r)+(r?' <span class="b">₿</span>':'')+'</div><div class="u">'+dollars(r)+'</div></div></div>'}
+
+function render(h){
+ var y=yearOf(h),tk=tierOf(h,y),t=TIERS[tk],sb=subBucket(h),pat=patterns(h);
+ var chips=['<span class="chip">Mined '+y+'</span>'];
+ if(sb)chips.push('<span class="chip'+(h<1000?' hot':'')+'">'+sb+'</span>');
+ chips.push('<span class="chip">'+String(h).length+'-digit</span>');
+ pat.forEach(function(p){chips.push('<span class="chip">'+p+'</span>')});
+ var body='';
+ if(tk==='genesis'){
+  body+='<p>Block 0 is the genesis block, one of a kind. There are no comparable sales, so we won\'t put a number on it.</p>';
+ }else{
+  body+='<p>Priced as a <b>'+t.name+'</b> bitmap using what that tier did on Satflow, '+AS_OF+'. These are tier prices, not an offer on this exact block.</p>';
+  if(tk==='sub1k'&&h<100)body+='<p>Sub-100 blocks are rarer than most sub-1K sales, so expect the top of the range or above.</p>';
+  if(tk==='y2009_4')body+='<p>Six 4-digit 2009 blocks sold this week (0.001–0.002). We don\'t have a reliable bid or ask for this tier yet.</p>';
+  if(tk==='y2024')body+='<p>2024+ blocks don\'t have their own tier yet, so they\'re priced like 2013–2023 plain blocks.</p>';
+  if(pat.length)body+='<p>Number patterns are shown for interest. We haven\'t seen proof they sell for more, so they don\'t change the price.</p>';
+ }
+ if(h<=54316&&h>0)body+='<p class="warn">Satoshi-era block. If it is a <b>Patoshi</b> block, it can sell well above this tier. Patoshi, pizza and punk traits are checked in wallet appraisals (coming soon).</p>';
+ else if(h>0)body+='<p class="warn">Special traits (pizza, punks) aren\'t checked yet. If your block has one, it can be worth more: pizza blocks sold for 0.0024 this week.</p>';
+ body+='<div id="lk-facts"></div><div class="rc-links"><button type="button" id="lk-share">Copy link to this appraisal</button><a id="lk-mp" href="https://mempool.space/block/'+h+'" rel="noopener" target="_blank">View block on mempool.space</a></div>';
+ out.innerHTML='<div class="rc"><div class="rc-head"><div><h3 class="rc-name">'+h+'.bitmap</h3><div class="rc-meta" id="lk-date">Block '+h.toLocaleString()+'</div></div><span class="rc-tier">'+t.name.toUpperCase()+'</span></div>'
+  +'<div class="chips">'+chips.join('')+'</div>'
+  +(tk==='genesis'?'':'<div class="nums">'+num('Sell now (top bid)',t.bid)+num('Recent sales',t.sold,true)+num('Cheapest ask',t.ask)+'</div>')
+  +'<div class="rc-body">'+body+'<p class="note" style="margin-top:14px">Source: Satflow, '+AS_OF+'. Dollar values at today\'s BTC price. Not financial advice.</p></div></div>';
+ $('lk-share').onclick=function(){var u=location.origin+location.pathname+'?b='+h+'#lookup';(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){$('lk-share').textContent='Link copied'},function(){$('lk-share').textContent=u})};
+ blockFacts(h);
+}
+
+function blockFacts(h){
+ fetch('https://mempool.space/api/block-height/'+h).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(hash){
+  $('lk-mp')&&($('lk-mp').href='https://mempool.space/block/'+hash);
+  return fetch('https://mempool.space/api/block/'+hash).then(function(r){return r.json()});
+ }).then(function(b){
+  var d=new Date(b.timestamp*1000);var el=$('lk-date');
+  if(el)el.textContent='Block '+h.toLocaleString()+' · mined '+d.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric',timeZone:'UTC'})+' · '+b.tx_count.toLocaleString()+' transaction'+(b.tx_count===1?'':'s');
+ }).catch(function(){});
+}
+
+function go(v,push){
+ var h=parse(v);
+ if(h===null){out.innerHTML='<p class="err">Enter a block number, like 657 or 14780.bitmap.</p>';return}
+ var max=tip||970000;
+ if(h>max){out.innerHTML='<p class="err">Block '+h.toLocaleString()+' hasn\'t been mined yet. The latest block is '+max.toLocaleString()+'.</p>';return}
+ inp.value=h;render(h);
+ if(push!==false)try{history.replaceState(null,'','?b='+h+'#lookup')}catch(e){}
+}
+
+$('lk-form').addEventListener('submit',function(e){e.preventDefault();go(inp.value)});
+document.querySelectorAll('.lk-try button').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.b)})});
+
+Promise.all([
+ fetch('https://mempool.space/api/blocks/tip/height').then(function(r){return r.text()}).then(function(t){tip=parseInt(t,10)||null}).catch(function(){}),
+ fetch('https://mempool.space/api/v1/prices').then(function(r){return r.json()}).then(function(p){usd=p.USD||null}).catch(function(){})
+]).then(function(){
+ var q=new URLSearchParams(location.search).get('b');
+ if(q!==null){go(q,false);var s=$('lookup');s&&s.scrollIntoView()}
+ else if(out.firstChild&&inp.value)go(inp.value,false);
+});
+})();
+</script>
 </body>
 </html>
