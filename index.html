@@ -107,6 +107,10 @@ tbody tr{border-top:1px solid #23252B}
 .rp-img img{display:block;width:100%;height:auto}
 @media (max-width:760px){.rp{grid-template-columns:1fr;gap:28px}.rp-img{transform:none;max-width:420px}}
 .wl-sum{margin-top:28px}
+.paybox{margin:18px 0 6px;padding:18px 20px;border:1px solid var(--acc);border-radius:14px;background:rgba(247,147,26,.07)}
+.paybox .btn[aria-disabled]{opacity:.55;cursor:default}
+.paybox button.btn{border:0;font:inherit;font-weight:700;cursor:pointer}
+.paybox button.btn.ghost{border:1px solid #4A4C53}
 .wl-sum .nums{margin-top:0;border-top:0}
 .wl-sum .rc-head .rc-name{font-size:clamp(22px,3.4vw,30px);word-break:break-all}
 .wl-tbl{width:100%;min-width:0;border-collapse:collapse;font-size:15px}
@@ -378,12 +382,41 @@ function renderWallet(d){
  h+='<div class="rc-body" style="padding-top:14px">';
  if(patoshiOut)h+='<p class="warn">'+patoshiOut+' Patoshi block'+(patoshiOut===1?'':'s')+' outside sub-1K '+(patoshiOut===1?'is':'are')+' priced at the regular tier for '+(patoshiOut===1?'its':'their')+' year. Patoshi can sell for more; we don\'t have enough sales yet to price the premium.</p>';
  h+='<p>Only valid bitmaps count. If you inscribed a block number after someone else, that copy isn\'t a bitmap and isn\'t included. Tier prices, not offers on your exact blocks. Punks and 4-digit 2009 blocks have no reliable bid or ask yet, so those fall back to their year\'s plain prices.</p>';
- h+='<p><a href="#report">Want this as a PDF report? See what the $15 report includes →</a></p>';
- h+='<div class="rc-links"><button type="button" id="wl-csv">Download CSV of every bitmap</button><button type="button" id="wl-share">Copy link to this appraisal</button></div>';
+ var unlocked=PAID.address===d.address;
+ h+='<div class="paybox" id="wl-pay">';
+ if(unlocked){
+  h+='<div class="kicker">YOUR REPORT IS READY</div><p style="margin:6px 0 14px">Payment received. Thank you! Download your full report below. Bookmark this page to download it again later.</p>'
+   +'<div class="ctas"><button type="button" class="btn" id="wl-pdf">Download PDF report</button><button type="button" class="btn ghost" id="wl-csv">Download CSV</button></div>';
+ }else{
+  h+='<div class="kicker">THE FULL REPORT · $15</div><p style="margin:6px 0 14px">Get this appraisal as a PDF you can keep: every bitmap priced line by line, plus a CSV. <a href="sample-report.pdf" target="_blank" rel="noopener">See a sample</a>.</p><div class="ctas">'
+   +(STRIPE_LINK?'<a class="btn" id="wl-card" href="'+STRIPE_LINK+'?client_reference_id='+encodeURIComponent(d.address)+'">Pay $15 by card</a>':'<span class="btn ghost" aria-disabled="true">Card checkout opens soon</span>')
+   +'<span class="btn ghost" aria-disabled="true">⚡ Lightning: coming soon</span></div>';
+ }
+ h+='</div>';
+ h+='<div class="rc-links"><button type="button" id="wl-share">Copy link to this appraisal</button></div>';
  h+='<p class="note" style="margin-top:14px">Prices: Satflow, '+AS_OF+'. Ownership and traits: Ordinals Wallet index, '+new Date(d.fetchedAt).toLocaleString()+'. Not financial advice.</p></div></div>';
  wout.innerHTML=h;
- $('wl-csv').onclick=function(){var rows=[['bitmap','year','tier','traits','top_bid_btc','recent_sales_btc','cheapest_ask_btc']];items.forEach(function(it){var tk=it.tk;rows.push([it.h+'.bitmap',yearOf(it.h),TIERS[tk].name,traitLabels(it.h,it.t).join(' '),tk==='genesis'?'':val(it.h,tk,'bid'),tk==='genesis'?'':btc(TIERS[tk].sold||TIERS[baseTier(it.h)].sold),tk==='genesis'?'':val(it.h,tk,'ask')])});var csv=rows.map(function(r){return r.join(',')}).join('\n');var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='bitmapcomps-'+d.address.slice(-6)+'.csv';document.body.appendChild(a);a.click();a.remove()};
+ window.__lastWallet=d;
+ if(unlocked){
+  $('wl-csv').onclick=function(){var rows=[['bitmap','year','tier','traits','top_bid_btc','recent_sales_btc','cheapest_ask_btc']];items.forEach(function(it){var tk=it.tk;rows.push([it.h+'.bitmap',yearOf(it.h),TIERS[tk].name,traitLabels(it.h,it.t).join(' '),tk==='genesis'?'':val(it.h,tk,'bid'),tk==='genesis'?'':btc(TIERS[tk].sold||TIERS[baseTier(it.h)].sold).replace(/–/g,'-'),tk==='genesis'?'':val(it.h,tk,'ask')])});var csv=rows.map(function(r){return r.join(',')}).join('\n');saveBlob(new Blob([csv],{type:'text/csv'}),'bitmapcomps-'+d.address.slice(-6)+'.csv')};
+  $('wl-pdf').onclick=function(){var b=$('wl-pdf');b.textContent='Building your report…';b.disabled=true;
+   loadPdfLibs().then(function(){return window.BCReport.build(d,{})}).then(function(r){saveBlob(r.doc.output('blob'),'BitmapComps-Appraisal-'+r.id+'.pdf');b.textContent='Download PDF report';b.disabled=false})
+   .catch(function(){b.textContent='Something went wrong. Try again';b.disabled=false})};
+ }
  $('wl-share').onclick=function(){var u=location.origin+location.pathname+'?w='+d.address+'#wallet';(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){$('wl-share').textContent='Link copied'},function(){$('wl-share').textContent=u})};
+}
+
+// ---------- Paid report ----------
+var STRIPE_LINK=''; // Stripe Payment Link URL, set once created
+var PAID={address:null,session:null};
+function saveBlob(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500)}
+function loadScript(src){return new Promise(function(res,rej){if(document.querySelector('script[src="'+src+'"]'))return res();var s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
+function loadPdfLibs(){return loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js').then(function(){return loadScript('https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js')}).then(function(){return loadScript('report.js')})}
+function unlock(sid){
+ return fetch(API+'/unlock?session_id='+encodeURIComponent(sid)).then(function(r){return r.json()}).then(function(j){
+  if(j.ok&&j.address){PAID={address:j.address,session:sid};try{localStorage.setItem('bc_paid_'+j.address,sid)}catch(e){}}
+  return j;
+ });
 }
 
 function goWallet(a,push){
@@ -392,7 +425,8 @@ function goWallet(a,push){
  win.value=a;wout.innerHTML='<p class="wl-loading">Reading every inscription at this address…</p>';
  fetch(API+'/wallet?address='+encodeURIComponent(a)).then(function(r){return r.json()}).then(function(d){
   if(d.error){wout.innerHTML='<p class="err">'+esc(d.error)+'</p>';return}
-  renderWallet(d);
+  var stored=null;try{stored=localStorage.getItem('bc_paid_'+d.address)}catch(e){}
+  if(stored&&PAID.address!==d.address){unlock(stored).then(function(){renderWallet(d)},function(){renderWallet(d)})}else renderWallet(d);
   if(push!==false)try{history.replaceState(null,'','?w='+a+'#wallet')}catch(e){}
  }).catch(function(){wout.innerHTML='<p class="err">Couldn\'t reach the appraisal service. Try again in a minute.</p>'});
 }
@@ -406,8 +440,12 @@ Promise.all([
  fetch('https://mempool.space/api/blocks/tip/height').then(function(r){return r.text()}).then(function(t){tip=parseInt(t,10)||null}).catch(function(){}),
  fetch('https://mempool.space/api/v1/prices').then(function(r){return r.json()}).then(function(p){usd=p.USD||null}).catch(function(){})
 ]).then(function(){
+ var paid=new URLSearchParams(location.search).get('paid');
  var w=new URLSearchParams(location.search).get('w');
- if(w){goWallet(w,false);var sw=$('wallet');sw&&sw.scrollIntoView()}
+ if(paid){wout.innerHTML='<p class="wl-loading">Confirming your payment…</p>';var sw0=$('wallet');sw0&&sw0.scrollIntoView();
+  unlock(paid).then(function(j){if(j.ok&&j.address){goWallet(j.address,false)}else{wout.innerHTML='<p class="err">'+esc(j.error||'We couldn\'t confirm that payment.')+' If you were charged, email us and we\'ll sort it out.</p>'}})
+  .catch(function(){wout.innerHTML='<p class="err">Couldn\'t confirm your payment right now. Refresh this page in a minute.</p>'});}
+ else if(w){goWallet(w,false);var sw=$('wallet');sw&&sw.scrollIntoView()}
  var q=new URLSearchParams(location.search).get('b');
  if(q!==null){go(q,false);var s=$('lookup');s&&s.scrollIntoView()}
  else if(out.firstChild&&inp.value)go(inp.value,false);
