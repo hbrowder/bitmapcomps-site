@@ -107,6 +107,9 @@ tbody tr{border-top:1px solid #23252B}
 .rp-img img{display:block;width:100%;height:auto}
 @media (max-width:760px){.rp{grid-template-columns:1fr;gap:28px}.rp-img{transform:none;max-width:420px}}
 .wl-sum{margin-top:28px}
+.paidbar{margin:0;padding:12px 24px;background:rgba(127,211,166,.12);border-bottom:1px solid var(--line);color:#BFF0D4;font-weight:600}
+.paidbar a{color:#7FD3A6}
+.paybox.flash{box-shadow:0 0 0 3px var(--acc)}
 .paybox{margin:18px 0 6px;padding:18px 20px;border:1px solid var(--acc);border-radius:14px;background:rgba(247,147,26,.07)}
 .paybox .btn[aria-disabled]{opacity:.55;cursor:default}
 .paybox button.btn{border:0;font:inherit;font-weight:700;cursor:pointer}
@@ -365,6 +368,7 @@ function renderWallet(d){
  var sales=Math.abs(sh-sl)<1e-9?sumFmt(sl):sumFmt(sl)+'–'+sumFmt(sh);
  var salesUsd=usd?(Math.abs(sh-sl)<1e-9?usdOf(sl):'≈ $'+Math.round(sl*usd).toLocaleString()+'–$'+Math.round(sh*usd).toLocaleString()):'';
  var h='<div class="rc wl-sum"><div class="rc-head"><div><h3 class="rc-name">'+items.length+' bitmap'+(items.length===1?'':'s')+'</h3><div class="rc-meta">'+esc(d.address.slice(0,10)+'…'+d.address.slice(-6))+' · '+d.totalInscriptions+' inscriptions in total</div></div><span class="rc-tier">APPRAISED</span></div>';
+ if(PAID.address===d.address)h+='<div class="paidbar">✓ Payment received. Your full report is ready below. <a href="#wl-pay">Download it →</a></div>';
  h+='<div class="nums"><div class="num"><div class="l">Sell now (top bids)</div><div><div class="v">'+sumFmt(lo)+' <span class="b">₿</span></div><div class="u">'+usdOf(lo)+'</div></div></div>'
   +'<div class="num main"><div class="l">Recent sales</div><div><div class="v">'+sales+' <span class="b">₿</span></div><div class="u">'+salesUsd+'</div></div></div>'
   +'<div class="num"><div class="l">Cheapest asks</div><div><div class="v">'+sumFmt(ak)+' <span class="b">₿</span></div><div class="u">'+usdOf(ak)+'</div></div></div></div>';
@@ -398,6 +402,7 @@ function renderWallet(d){
  wout.innerHTML=h;
  window.__lastWallet=d;
  if(unlocked){
+  setTimeout(function(){var pb=$('wl-pay');if(pb){pb.scrollIntoView({behavior:'smooth',block:'center'});pb.classList.add('flash')}},300);
   $('wl-csv').onclick=function(){var rows=[['bitmap','year','tier','traits','top_bid_btc','recent_sales_btc','cheapest_ask_btc']];items.forEach(function(it){var tk=it.tk;rows.push([it.h+'.bitmap',yearOf(it.h),TIERS[tk].name,traitLabels(it.h,it.t).join(' '),tk==='genesis'?'':val(it.h,tk,'bid'),tk==='genesis'?'':btc(TIERS[tk].sold||TIERS[baseTier(it.h)].sold).replace(/–/g,'-'),tk==='genesis'?'':val(it.h,tk,'ask')])});var csv=rows.map(function(r){return r.join(',')}).join('\n');saveBlob(new Blob([csv],{type:'text/csv'}),'bitmapcomps-'+d.address.slice(-6)+'.csv')};
   $('wl-pdf').onclick=function(){var b=$('wl-pdf');b.textContent='Building your report…';b.disabled=true;
    loadPdfLibs().then(function(){return window.BCReport.build(d,{})}).then(function(r){saveBlob(r.doc.output('blob'),'BitmapComps-Appraisal-'+r.id+'.pdf');b.textContent='Download PDF report';b.disabled=false})
