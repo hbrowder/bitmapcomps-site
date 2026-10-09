@@ -98,6 +98,14 @@ tbody tr{border-top:1px solid #23252B}
 .rc-links{display:flex;flex-wrap:wrap;gap:16px;font-size:15px;margin-top:6px}
 .rc-links button{background:none;border:0;color:var(--acc);font:inherit;cursor:pointer;padding:0;text-decoration:underline}
 .err{margin-top:20px;color:#FFB65C}
+.rp{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.rp-list{margin:0 0 26px;padding:0;list-style:none;color:#CFCAC0}
+.rp-list li{padding:8px 0 8px 26px;position:relative;border-bottom:1px solid #1E2025}
+.rp-list li:before{content:"";position:absolute;left:0;top:16px;width:10px;height:10px;border-radius:2px;background:var(--acc)}
+.rp-soon{align-self:center;color:var(--mute);font-size:15px}
+.rp-img{display:block;border-radius:10px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.45);transform:rotate(1.2deg);border:1px solid #2A2C32}
+.rp-img img{display:block;width:100%;height:auto}
+@media (max-width:760px){.rp{grid-template-columns:1fr;gap:28px}.rp-img{transform:none;max-width:420px}}
 .wl-sum{margin-top:28px}
 .wl-sum .nums{margin-top:0;border-top:0}
 .wl-sum .rc-head .rc-name{font-size:clamp(22px,3.4vw,30px);word-break:break-all}
@@ -157,6 +165,22 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
   <button class="btn" type="submit">Appraise wallet</button>
  </form>
  <div id="wl-out" aria-live="polite"></div>
+</div></section>
+
+<section id="report"><div class="wrap rp">
+ <div class="rp-copy">
+  <div class="kicker">THE FULL REPORT · $15</div>
+  <h2>A PDF appraisal you can keep</h2>
+  <p class="sub">Everything on the screen, plus every bitmap priced line by line, in a report you can save, print or share.</p>
+  <ul class="rp-list">
+   <li>Sell-now, recent-sales and asking totals in ₿ and dollars</li>
+   <li>Standouts: sub-1K, Patoshi, pizza, punks and early 2009 blocks</li>
+   <li>Value by tier, the full price sheet and how it was calculated</li>
+   <li>Full inventory: every valid bitmap with its traits and three prices</li>
+  </ul>
+  <div class="ctas"><a class="btn" href="sample-report.pdf" target="_blank" rel="noopener">See a sample report (PDF)</a><span class="rp-soon">Paid reports open soon</span></div>
+ </div>
+ <a class="rp-img" href="sample-report.pdf" target="_blank" rel="noopener"><img src="sample-report.jpg" alt="Page one of a sample BitmapComps appraisal report" width="935" height="1210" loading="lazy"></a>
 </div></section>
 
 <section id="lookup"><div class="wrap">
@@ -354,6 +378,7 @@ function renderWallet(d){
  h+='<div class="rc-body" style="padding-top:14px">';
  if(patoshiOut)h+='<p class="warn">'+patoshiOut+' Patoshi block'+(patoshiOut===1?'':'s')+' outside sub-1K '+(patoshiOut===1?'is':'are')+' priced at the regular tier for '+(patoshiOut===1?'its':'their')+' year. Patoshi can sell for more; we don\'t have enough sales yet to price the premium.</p>';
  h+='<p>Only valid bitmaps count. If you inscribed a block number after someone else, that copy isn\'t a bitmap and isn\'t included. Tier prices, not offers on your exact blocks. Punks and 4-digit 2009 blocks have no reliable bid or ask yet, so those fall back to their year\'s plain prices.</p>';
+ h+='<p><a href="#report">Want this as a PDF report? See what the $15 report includes →</a></p>';
  h+='<div class="rc-links"><button type="button" id="wl-csv">Download CSV of every bitmap</button><button type="button" id="wl-share">Copy link to this appraisal</button></div>';
  h+='<p class="note" style="margin-top:14px">Prices: Satflow, '+AS_OF+'. Ownership and traits: Ordinals Wallet index, '+new Date(d.fetchedAt).toLocaleString()+'. Not financial advice.</p></div></div>';
  wout.innerHTML=h;
@@ -372,6 +397,7 @@ function goWallet(a,push){
  }).catch(function(){wout.innerHTML='<p class="err">Couldn\'t reach the appraisal service. Try again in a minute.</p>'});
 }
 $('wl-form').addEventListener('submit',function(e){e.preventDefault();goWallet(win.value)});
+window.BC={TIERS:TIERS,ORDER:ORDER,AS_OF:AS_OF,yearOf:yearOf,walletTier:walletTier,baseTier:baseTier,val:val,traitLabels:traitLabels,usd:function(){return usd}};
 
 $('lk-form').addEventListener('submit',function(e){e.preventDefault();go(inp.value)});
 document.querySelectorAll('.lk-try button').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.b)})});
