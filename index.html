@@ -407,7 +407,7 @@ function renderWallet(d){
 }
 
 // ---------- Paid report ----------
-var STRIPE_LINK=''; // Stripe Payment Link URL, set once created
+var STRIPE_LINK='https://buy.stripe.com/test_4gM3cv9yy7ff8uweSFf7i00'; // Stripe Payment Link (sandbox; swap for live link at launch)
 var PAID={address:null,session:null};
 function saveBlob(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500)}
 function loadScript(src){return new Promise(function(res,rej){if(document.querySelector('script[src="'+src+'"]'))return res();var s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}

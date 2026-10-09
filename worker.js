@@ -44,7 +44,9 @@ export default {
       } catch (e) {
         return json(req, { ok: false, error: 'Could not reach Stripe. Try again in a minute.' }, 502);
       }
-      const paid = s.payment_status === 'paid' && s.status === 'complete' && (s.amount_total || 0) >= 1500 && s.currency === 'usd';
+      const cc = s.currency_conversion || null; // Adaptive Pricing: buyer may pay in local currency
+      const usdOk = (s.currency === 'usd' && (s.amount_total || 0) >= 1500) || (cc && cc.source_currency === 'usd' && (cc.amount_total || 0) >= 1500);
+      const paid = s.payment_status === 'paid' && s.status === 'complete' && usdOk;
       if (!paid) return json(req, { ok: false, error: 'That payment is not complete.' }, 402);
       const addr = (s.client_reference_id || '').trim();
       return json(req, { ok: true, address: ADDR.test(addr) ? addr : null, email: s.customer_details ? s.customer_details.email : null });
