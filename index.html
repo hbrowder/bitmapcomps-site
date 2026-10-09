@@ -181,7 +181,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 
 <section id="wallet"><div class="wrap">
  <div class="kicker">APPRAISE A WALLET</div>
- <h2>What are your bitmaps worth?</h2>
+ <h2>Run the comps on your wallet.</h2>
  <p class="sub">Paste a Bitcoin address. We find every valid bitmap it holds, read its traits, and price it with this week's real sales. Read-only: no wallet connection, nothing to sign.</p>
  <form id="wl-form" class="lk-form" autocomplete="off">
   <label for="wl-in" class="sr">Bitcoin address</label>
@@ -193,7 +193,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 
 <section id="report"><div class="wrap rp">
  <div class="rp-copy">
-  <div class="kicker">THE FULL REPORT · $15</div>
+  <div class="kicker">THE FULL COMP SHEET · $15</div>
   <h2>A PDF appraisal you can keep</h2>
   <p class="sub">Everything on the screen, plus every bitmap priced line by line, in a report you can save, print or share.</p>
   <ul class="rp-list">
@@ -409,7 +409,7 @@ function renderWallet(d){
   h+='<div class="kicker">YOUR REPORT IS READY</div><p style="margin:6px 0 14px">Payment received. Thank you! Download your full report below. Bookmark this page to download it again later.</p>'
    +'<div class="ctas"><button type="button" class="btn" id="wl-pdf">Download PDF report</button><button type="button" class="btn ghost" id="wl-csv">Download CSV</button></div>';
  }else{
-  h+='<div class="kicker">THE FULL REPORT · $15</div><p style="margin:6px 0 14px">Get this appraisal as a PDF you can keep: every bitmap priced line by line, plus a CSV. <a href="sample-report.pdf" target="_blank" rel="noopener">See a sample</a>.</p><div class="ctas">'
+  h+='<div class="kicker">THE FULL COMP SHEET · $15</div><p style="margin:6px 0 14px">Get this appraisal as a PDF you can keep: every bitmap priced line by line, plus a CSV. <a href="sample-report.pdf" target="_blank" rel="noopener">See a sample</a>.</p><div class="ctas">'
    +(STRIPE_LINK?'<a class="btn" id="wl-card" href="'+STRIPE_LINK+'?client_reference_id='+encodeURIComponent(d.address)+'">Pay $15 by card</a>':'<span class="btn ghost" aria-disabled="true">Card checkout opens soon</span>')
    +'<span class="btn ghost" aria-disabled="true">⚡ Lightning: coming soon</span></div>';
  }
