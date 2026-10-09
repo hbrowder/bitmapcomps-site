@@ -144,6 +144,15 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
  .rc-head,.rc-body{padding-left:20px;padding-right:20px}
  .chips{padding-left:20px;padding-right:20px}
 }
+.mkt{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;margin-top:18px;padding-top:14px;padding-bottom:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.mkt-k{font-size:12px;letter-spacing:.14em;color:var(--acc);font-weight:600}
+.mkt-i{display:flex;flex-direction:column;gap:2px;min-width:0}
+.mkt-i>span{font-size:12px;color:var(--mute);letter-spacing:.04em}
+.mkt-i b{font-variant-numeric:tabular-nums;font-size:16px;font-weight:600;color:var(--text)}
+.mkt-i b .b{color:var(--acc);font-family:'DejaVu Sans',sans-serif}
+.mkt-i small{font-size:12px;font-weight:400;color:var(--mute)}
+.mkt-s{flex-basis:100%;font-size:12px;color:var(--mute)}
+@media (max-width:760px){.mkt{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}.mkt-k,.mkt-s{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -152,6 +161,14 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
  <a class="btn" href="https://x.com/BitmapComps" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7.6 8.7L23 22h-6.9l-5.4-7-6.2 7H1.4l8.1-9.3L1 2h7l4.9 6.5L18.9 2Zm-1.2 18h1.9L7.3 4H5.3l12.4 16Z"/></svg>Follow<span class="long">&nbsp;@BitmapComps</span></a>
 </div></header>
 <main>
+<div class="wrap mkt" aria-label="Bitmap market this week">
+ <div class="mkt-k">MARKET THIS WEEK</div>
+ <div class="mkt-i"><span>Bitcoin</span><b id="mkt-btc">—</b></div>
+ <div class="mkt-i"><span>7-day volume</span><b>0.15 <span class="b">₿</span></b></div>
+ <div class="mkt-i"><span>Listed for sale</span><b>6.4K <small>of 970.6K</small></b></div>
+ <div class="mkt-i"><span>Land Index</span><b>Base week <small>trend from Oct 15</small></b></div>
+ <div class="mkt-s">Volume and listings: Ordinals Wallet, Oct 8. Bitcoin: live. A thin market is why we price by sales, not floors.</div>
+</div>
 <div class="wrap hero">
  <div>
   <div class="kicker">BITCOIN BITMAP APPRAISALS</div>
@@ -445,6 +462,7 @@ Promise.all([
  fetch('https://mempool.space/api/blocks/tip/height').then(function(r){return r.text()}).then(function(t){tip=parseInt(t,10)||null}).catch(function(){}),
  fetch('https://mempool.space/api/v1/prices').then(function(r){return r.json()}).then(function(p){usd=p.USD||null}).catch(function(){})
 ]).then(function(){
+ var mb=$('mkt-btc');if(mb&&usd)mb.textContent='$'+Math.round(usd).toLocaleString('en-US');
  var paid=new URLSearchParams(location.search).get('paid');
  var w=new URLSearchParams(location.search).get('w');
  if(paid){wout.innerHTML='<p class="wl-loading">Confirming your payment…</p>';var sw0=$('wallet');sw0&&sw0.scrollIntoView();
