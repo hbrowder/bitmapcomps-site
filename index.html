@@ -164,10 +164,10 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 <div class="wrap mkt" aria-label="Bitmap market this week">
  <div class="mkt-k">MARKET THIS WEEK</div>
  <div class="mkt-i"><span>Bitcoin</span><b id="mkt-btc">—</b></div>
- <div class="mkt-i"><span>7-day volume</span><b>0.15 <span class="b">₿</span></b></div>
- <div class="mkt-i"><span>Listed for sale</span><b>6.4K <small>of 970.6K</small></b></div>
- <div class="mkt-i"><span>Land Index</span><b>Base week <small>trend from Oct 15</small></b></div>
- <div class="mkt-s">Volume and listings: Ordinals Wallet, Oct 8. Bitcoin: live. A thin market is why we price by sales, not floors.</div>
+ <div class="mkt-i"><span>7-day volume</span><b>0.12 <span class="b">₿</span></b></div>
+ <div class="mkt-i"><span>Listed for sale</span><b>6.1K <small>of 971.0K</small></b></div>
+ <div class="mkt-i"><span>Land Index</span><b>+25% <small>plain top bid vs Oct 1–7</small></b></div>
+ <div class="mkt-s">Volume and listings: Satflow, Oct 11. Bitcoin: live. A thin market is why we price by sales, not floors.</div>
 </div>
 <div class="wrap hero">
  <div>
@@ -221,21 +221,21 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 </div></section>
 
 <section id="index"><div class="wrap">
- <div class="kicker">BITMAP LAND INDEX · OCT 1–7, 2026</div>
+ <div class="kicker">BITMAP LAND INDEX · OCT 8–11, 2026</div>
  <h2>What bitmaps actually sold for</h2>
  <p class="sub">Asking prices aren't sales. Here is what each tier actually sold for, next to the top bid and the cheapest listing. Prices in <span style="font-family:'DejaVu Sans',sans-serif">₿</span>.</p>
  <div class="tablebox"><table>
   <thead><tr><th scope="col">Tier</th><th scope="col">Actually sold</th><th scope="col">Top bid</th><th scope="col" class="col-ask">Cheapest ask</th></tr></thead>
   <tbody>
-<tr><th scope="row"><span class="dot hot"></span>Sub-1K</th><td class="sold">0.0065–0.0195</td><td>0.0042</td><td class="col-ask">0.0100</td></tr>
-<tr><th scope="row"><span class="dot hot"></span>Pizza</th><td class="sold">0.0024</td><td>0.0018</td><td class="col-ask">none listed</td></tr>
-<tr><th scope="row"><span class="dot hot"></span>2009, 5-digit</th><td class="sold">0.0005</td><td>0.00017</td><td class="col-ask">0.00034</td></tr>
-<tr><th scope="row"><span class="dot"></span>2010</th><td class="sold">0.0001–0.0003</td><td>0.0001</td><td class="col-ask">0.00017</td></tr>
-<tr><th scope="row"><span class="dot"></span>2011–2012</th><td class="sold">0.00012</td><td>0.0001</td><td class="col-ask">0.00015</td></tr>
-<tr><th scope="row"><span class="dot"></span>2013–2023</th><td class="sold">0.0001</td><td>0.00008</td><td class="col-ask">0.00008–0.00013</td></tr>
+<tr><th scope="row"><span class="dot hot"></span>Sub-1K</th><td class="sold">0.0065–0.0195</td><td>0.0050</td><td class="col-ask">0.0100</td></tr>
+<tr><th scope="row"><span class="dot hot"></span>Pizza</th><td class="sold">0.0024–0.0042</td><td>0.0014</td><td class="col-ask">none listed</td></tr>
+<tr><th scope="row"><span class="dot hot"></span>2009, 5-digit</th><td class="sold">0.0005–0.0008</td><td>0.00021</td><td class="col-ask">0.00034</td></tr>
+<tr><th scope="row"><span class="dot"></span>2010</th><td class="sold">0.0002</td><td>0.00012</td><td class="col-ask">0.0002</td></tr>
+<tr><th scope="row"><span class="dot"></span>2011–2012</th><td class="sold">0.0001–0.0003</td><td>0.0001</td><td class="col-ask">0.00015</td></tr>
+<tr><th scope="row"><span class="dot"></span>2013–2023</th><td class="sold">0.0001–0.00013</td><td>0.0001</td><td class="col-ask">0.00012</td></tr>
   </tbody>
  </table></div>
- <p class="note">Source: Satflow sales, bids and listings, Oct 1–7, 2026. Updated weekly. Not financial advice.</p>
+ <p class="note">Source: Satflow sales, bids and listings, Oct 8–11, 2026. Updated weekly. Not financial advice.</p>
 </div></section>
 
 <section><div class="wrap">
@@ -258,19 +258,19 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 (function(){
 // Last block mined before Jan 1 (UTC) of each year, from mempool.space.
 var YEAR_END={2009:32489,2010:100409,2011:160036,2012:214562,2013:277995,2014:336860,2015:391181,2016:446032,2017:501960,2018:556458,2019:610690,2020:663912,2021:716598,2022:769786,2023:823785,2024:877258,2025:930340};
-var AS_OF='Oct 1–7, 2026';
+var AS_OF='Oct 8–11, 2026';
 // Tier prices in BTC from Satflow sales, bids and listings. [low, high] ranges; null = no data that week.
 var TIERS={
  genesis:{name:'Genesis block',bid:null,sold:null,ask:null},
- sub1k:{name:'Sub-1K',bid:[0.0042],sold:[0.0065,0.0195],ask:[0.0100]},
- y2009_4:{name:'2009, 4-digit',bid:null,sold:[0.001,0.002],ask:null},
- y2009_5:{name:'2009, 5-digit',bid:[0.00017],sold:[0.0005],ask:[0.00034]},
- y2010:{name:'2010',bid:[0.0001],sold:[0.0001,0.0003],ask:[0.00017]},
- y2011:{name:'2011–2012',bid:[0.0001],sold:[0.00012],ask:[0.00015]},
- y2013:{name:'2013–2023',bid:[0.00008],sold:[0.0001],ask:[0.00008,0.00013]},
- y2024:{name:'2024 and later',bid:[0.00008],sold:[0.0001],ask:[0.00008,0.00013]},
- pizza:{name:'Pizza',bid:[0.0018],sold:[0.0024],ask:null},
- punks:{name:'Punks',bid:null,sold:[0.0004,0.0006],ask:null}
+ sub1k:{name:'Sub-1K',bid:[0.0050],sold:[0.0065,0.0195],ask:[0.0100]},
+ y2009_4:{name:'2009, 4-digit',bid:[0.00059],sold:[0.001,0.002],ask:null},
+ y2009_5:{name:'2009, 5-digit',bid:[0.00021],sold:[0.0005,0.0008],ask:[0.00034]},
+ y2010:{name:'2010',bid:[0.00012],sold:[0.0002],ask:[0.0002]},
+ y2011:{name:'2011–2012',bid:[0.0001],sold:[0.0001,0.0003],ask:[0.00015]},
+ y2013:{name:'2013–2023',bid:[0.0001],sold:[0.0001,0.00013],ask:[0.00012]},
+ y2024:{name:'2024 and later',bid:[0.0001],sold:[0.0001,0.00012],ask:[0.00012]},
+ pizza:{name:'Pizza',bid:[0.0014],sold:[0.0024,0.00423],ask:null},
+ punks:{name:'Punks',bid:[0.00051],sold:[0.0004,0.0006],ask:null}
 };
 var tip=null,usd=null;
 var $=function(id){return document.getElementById(id)};
@@ -402,7 +402,7 @@ function renderWallet(d){
  var patoshiOut=items.filter(function(i){return i.t.patoshi==='true'&&i.h>=1000}).length;
  h+='<div class="rc-body" style="padding-top:14px">';
  if(patoshiOut)h+='<p class="warn">'+patoshiOut+' Patoshi block'+(patoshiOut===1?'':'s')+' outside sub-1K '+(patoshiOut===1?'is':'are')+' priced at the regular tier for '+(patoshiOut===1?'its':'their')+' year. Patoshi can sell for more; we don\'t have enough sales yet to price the premium.</p>';
- h+='<p>Only valid bitmaps count. If you inscribed a block number after someone else, that copy isn\'t a bitmap and isn\'t included. Tier prices, not offers on your exact blocks. Punks and 4-digit 2009 blocks have no reliable bid or ask yet, so those fall back to their year\'s plain prices.</p>';
+ h+='<p>Only valid bitmaps count. If you inscribed a block number after someone else, that copy isn\'t a bitmap and isn\'t included. Tier prices, not offers on your exact blocks. Punks, pizza and 4-digit 2009 blocks have no reliable asking price yet, so those fall back to their sales price.</p>';
  var unlocked=PAID.address===d.address;
  h+='<div class="paybox" id="wl-pay">';
  if(unlocked){
