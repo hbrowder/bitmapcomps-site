@@ -169,7 +169,7 @@
       startY: y + 8,
       head: [['Tier', 'Top bid', 'Recent sales', 'Cheapest ask']],
       styles: Object.assign({}, tableStyle.styles, { fontSize: 8.5, cellPadding: { top: 3.5, bottom: 3.5, left: 6, right: 6 } }),
-      body: ['sub1k', 'pizza', 'y2009_4', 'y2009_5', 'punks', 'y2010', 'y2011', 'y2013', 'y2024'].map(function (k) {
+      body: ['sub1k', 'pizza', 'y2009_4', 'y2009_5', 'punks', 'y2010', 'y2011', 'y2012', 'y2013', 'y2014', 'y2024'].map(function (k) {
         return [T[k].name, fr(T[k].bid), fr(T[k].sold), fr(T[k].ask)];
       }),
       columnStyles: { 1: { halign: 'right', font: 'courier' }, 2: { halign: 'right', font: 'courier' }, 3: { halign: 'right', font: 'courier' } }
