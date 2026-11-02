@@ -344,6 +344,8 @@ function blockFacts(h){
  }).then(function(b){
   var d=new Date(b.timestamp*1000);var el=$('lk-date');
   if(el)el.textContent='Block '+h.toLocaleString()+' · mined '+d.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric',timeZone:'UTC'})+' · '+b.tx_count.toLocaleString()+' transaction'+(b.tx_count===1?'':'s');
+  var m=MATTER[h]=matterFor(h,b.nonce,b.bits),fx=$('lk-facts');
+  if(fx)fx.innerHTML='<p><b>Digital matter:</b> '+(m.length?m.join(', ')+'. If this bitmap is linked in Digital Matter World, its holder earns 15% of every mint from the block. It doesn\'t change our price until sales show a premium.':'none of the Digital Matter World patterns found so far ('+MATTER_AS_OF+'), apart from Natural, which nearly every block has.')+'</p>';
  }).catch(function(){});
 }
 
@@ -376,6 +378,43 @@ function val(h,tk,col,pick){var T=TIERS[tk],B=TIERS[baseTier(h)],r=T[col];
  if(!r)return 0;return pick==='hi'?(r[1]||r[0]):r[0]}
 function sumFmt(x){return x>=0.01?x.toFixed(3):x.toFixed(4)}
 function usdOf(x){return usd?'≈ $'+Math.round(x*usd).toLocaleString():''}
+// ---------- Digital matter (Digital Matter World patterns, snapshot Nov 1, 2026) ----------
+// Each pattern is a regex on one block-header field: h = height (decimal), n = nonce (decimal), b = difficulty bits (hex).
+// "Natural" (any digit in the bits) is left out: nearly every block has it.
+var MATTER_AS_OF='Nov 1, 2026',MATTER_FOUND=20;
+var MATTER_PATS=[
+ ['Pizza','h',/57043/],['Centuryblock','h',/0{5}$/],['Milestone','h',/0{3}$/],['Nullspar','h',/0{4}/],
+ ['Nicenonce','n',/69420/],['Pimatter','n',/^31415/],['Pinonce','n',/31415/],['Ninefold','n',/9{5}/],['Voidcore','n',/0{5}/],
+ ['Groundstate','n',/^[0-9]{1,5}$/],['Lowtide','n',/^[0-4]{10}$/],['Evenstone','n',/^[2468]{9,10}$/],['Oddstone','n',/^[13579]{10}$/],
+ ['Luckyeights','n',/8{4}/],['Florite','n',/0123/],['Jackpot','n',/7{3}/],['Nonceendzero','n',/00$/],['Muffinite','n',/^3[0-4]/],
+ ['Satoshiera','b',/^1d00ffff$/]
+];
+var MATTER={};
+function matterFor(h,nonce,bits){var f={h:String(h),n:String(nonce),b:Number(bits).toString(16)};
+ return MATTER_PATS.filter(function(p){return p[2].test(f[p[1]])}).map(function(p){return p[0]})}
+function matterOf(h){return MATTER[h]||null}
+// Fetch nonce and bits for many heights. mempool returns 15 blocks per call, counting down from the start height.
+function loadMatter(hs,onProgress){
+ var todo=hs.filter(function(h){return !MATTER[h]}).sort(function(a,b){return a-b}),hdr={},done=0;
+ var starts=[],cov=-1;todo.forEach(function(h){if(h>cov){var s=Math.min(h+14,tip||h+14);starts.push(s);cov=s}});
+ function one(s){return fetch('https://mempool.space/api/v1/blocks/'+s).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(a){a.forEach(function(b){hdr[b.height]=b})}).catch(function(){}).then(function(){done++;onProgress&&onProgress(done,starts.length)})}
+ var i=0;function worker(){if(i>=starts.length)return Promise.resolve();return one(starts[i++]).then(worker)}
+ return Promise.all([worker(),worker(),worker()]).then(function(){todo.forEach(function(h){var b=hdr[h];if(b)MATTER[h]=matterFor(h,b.nonce,b.bits)})});
+}
+function renderMatter(items){
+ var el=$('wl-matter');if(!el)return;
+ var have=items.filter(function(i){return MATTER[i.h]}),withM=have.filter(function(i){return MATTER[i.h].length});
+ var by={};withM.forEach(function(i){MATTER[i.h].forEach(function(m){(by[m]=by[m]||[]).push(i.h)})});
+ var h='<div class="wl-h">DIGITAL MATTER</div><div class="rc-body" style="padding-top:4px"><p><b>'+withM.length+' of '+have.length+'</b> blocks carry a Digital Matter World pattern ('+MATTER_FOUND+' patterns found as of '+MATTER_AS_OF+'; Natural, which nearly every block has, is left out).</p></div>';
+ if(withM.length){
+  h+='<div class="wl-box"><table class="wl-tbl"><thead><tr><th class="l">Pattern</th><th>Count</th><th class="l hide-m">Blocks</th></tr></thead><tbody>';
+  MATTER_PATS.forEach(function(p){var l=by[p[0]];if(!l)return;l.sort(function(a,b){return a-b});
+   h+='<tr><td class="l">'+p[0]+'</td><td>'+l.length+'</td><td class="l hide-m">'+l.slice(0,8).map(function(x){return '<a href="?b='+x+'#lookup">'+x+'</a>'}).join(', ')+(l.length>8?' +'+(l.length-8)+' more':'')+'</td></tr>'});
+  h+='</tbody></table></div>';
+ }
+ h+='<div class="rc-body" style="padding-top:10px"><p class="note">Bitmap holders who link their block in Digital Matter World earn 15% of every mint from it. Matter doesn\'t change our prices until sales show buyers pay more for it.</p></div>';
+ el.innerHTML=h;
+}
 function traitLabels(h,t){var L=[];if(h<1000)L.push('Sub-1K');if(t.patoshi==='true')L.push('Patoshi');if(t.pizza==='true')L.push('Pizza');if(t.punks)L.push(t.punks.replace(/Punks$/,' punks'));if(t.vintage==='true'&&h>=1000)L.push('Vintage');return L}
 
 function renderWallet(d){
@@ -405,6 +444,7 @@ function renderWallet(d){
  h+='<div class="wl-h">BY TIER</div><div class="wl-box"><table class="wl-tbl"><thead><tr><th>Tier</th><th>Count</th><th>Recent sales</th></tr></thead><tbody>';
  ORDER.forEach(function(k){var g=byTier[k];if(!g)return;h+='<tr><td class="l">'+TIERS[k].name+'</td><td>'+g.n+'</td><td>'+(Math.abs(g.hi-g.lo)<1e-9?sumFmt(g.lo):sumFmt(g.lo)+'–'+sumFmt(g.hi))+'</td></tr>'});
  h+='</tbody></table></div>';
+ h+='<div id="wl-matter"><div class="wl-h">DIGITAL MATTER</div><div class="rc-body" style="padding-top:4px"><p class="wl-loading" id="wl-mprog">Checking each block for digital matter…</p></div></div>';
  var patoshiOut=items.filter(function(i){return i.t.patoshi==='true'&&i.h>=1000}).length;
  h+='<div class="rc-body" style="padding-top:14px">';
  if(patoshiOut)h+='<p class="warn">'+patoshiOut+' Patoshi block'+(patoshiOut===1?'':'s')+' outside sub-1K '+(patoshiOut===1?'is':'are')+' priced at the regular tier for '+(patoshiOut===1?'its':'their')+' year. Patoshi can sell for more; we don\'t have enough sales yet to price the premium.</p>';
@@ -424,11 +464,12 @@ function renderWallet(d){
  h+='<p class="note" style="margin-top:14px">Prices: Satflow, '+AS_OF+'. Ownership and traits: Ordinals Wallet index, '+new Date(d.fetchedAt).toLocaleString()+'. Not financial advice.</p></div></div>';
  wout.innerHTML=h;
  window.__lastWallet=d;
+ loadMatter(items.map(function(i){return i.h}),function(n,of){var p=$('wl-mprog');if(p)p.textContent='Checking each block for digital matter… '+Math.round(100*n/of)+'%'}).then(function(){if(window.__lastWallet===d)renderMatter(items)});
  if(unlocked){
   setTimeout(function(){var pb=$('wl-pay');if(pb){pb.scrollIntoView({behavior:'smooth',block:'center'});pb.classList.add('flash')}},300);
-  $('wl-csv').onclick=function(){var rows=[['bitmap','year','tier','traits','top_bid_btc','recent_sales_btc','cheapest_ask_btc']];items.forEach(function(it){var tk=it.tk;rows.push([it.h+'.bitmap',yearOf(it.h),TIERS[tk].name,traitLabels(it.h,it.t).join(' '),tk==='genesis'?'':val(it.h,tk,'bid'),tk==='genesis'?'':btc(TIERS[tk].sold||TIERS[baseTier(it.h)].sold).replace(/–/g,'-'),tk==='genesis'?'':val(it.h,tk,'ask')])});var csv=rows.map(function(r){return r.join(',')}).join('\n');saveBlob(new Blob([csv],{type:'text/csv'}),'bitmapcomps-'+d.address.slice(-6)+'.csv')};
+  $('wl-csv').onclick=function(){var rows=[['bitmap','year','tier','traits','digital_matter','top_bid_btc','recent_sales_btc','cheapest_ask_btc']];items.forEach(function(it){var tk=it.tk;rows.push([it.h+'.bitmap',yearOf(it.h),TIERS[tk].name,traitLabels(it.h,it.t).join(' '),(MATTER[it.h]||[]).join(' '),tk==='genesis'?'':val(it.h,tk,'bid'),tk==='genesis'?'':btc(TIERS[tk].sold||TIERS[baseTier(it.h)].sold).replace(/–/g,'-'),tk==='genesis'?'':val(it.h,tk,'ask')])});var csv=rows.map(function(r){return r.join(',')}).join('\n');saveBlob(new Blob([csv],{type:'text/csv'}),'bitmapcomps-'+d.address.slice(-6)+'.csv')};
   $('wl-pdf').onclick=function(){var b=$('wl-pdf');b.textContent='Building your report…';b.disabled=true;
-   loadPdfLibs().then(function(){return window.BCReport.build(d,{})}).then(function(r){saveBlob(r.doc.output('blob'),'BitmapComps-Appraisal-'+r.id+'.pdf');b.textContent='Download PDF report';b.disabled=false})
+   loadPdfLibs().then(function(){return loadMatter(items.map(function(i){return i.h}))}).then(function(){return window.BCReport.build(d,{})}).then(function(r){saveBlob(r.doc.output('blob'),'BitmapComps-Appraisal-'+r.id+'.pdf');b.textContent='Download PDF report';b.disabled=false})
    .catch(function(){b.textContent='Something went wrong. Try again';b.disabled=false})};
  }
  $('wl-share').onclick=function(){var u=location.origin+location.pathname+'?w='+d.address+'#wallet';(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){$('wl-share').textContent='Link copied'},function(){$('wl-share').textContent=u})};
@@ -459,7 +500,7 @@ function goWallet(a,push){
  }).catch(function(){wout.innerHTML='<p class="err">Couldn\'t reach the appraisal service. Try again in a minute.</p>'});
 }
 $('wl-form').addEventListener('submit',function(e){e.preventDefault();goWallet(win.value)});
-window.BC={TIERS:TIERS,ORDER:ORDER,AS_OF:AS_OF,yearOf:yearOf,walletTier:walletTier,baseTier:baseTier,val:val,traitLabels:traitLabels,usd:function(){return usd}};
+window.BC={TIERS:TIERS,ORDER:ORDER,AS_OF:AS_OF,yearOf:yearOf,walletTier:walletTier,baseTier:baseTier,val:val,traitLabels:traitLabels,matterOf:matterOf,MATTER_AS_OF:MATTER_AS_OF,usd:function(){return usd}};
 
 $('lk-form').addEventListener('submit',function(e){e.preventDefault();go(inp.value)});
 document.querySelectorAll('.lk-try button').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.b)})});

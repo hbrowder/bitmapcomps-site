@@ -27,7 +27,7 @@
       var t = b.t || {}, tk = BC.walletTier(b.h, t), g = tk === 'genesis';
       var sold = g ? null : (T[tk].sold || T[BC.baseTier(b.h)].sold);
       return {
-        h: b.h, t: t, tk: tk, year: BC.yearOf(b.h), traits: BC.traitLabels(b.h, t),
+        h: b.h, t: t, tk: tk, year: BC.yearOf(b.h), traits: BC.traitLabels(b.h, t), matter: (BC.matterOf && BC.matterOf(b.h)) || [],
         bid: g ? 0 : BC.val(b.h, tk, 'bid'), lo: g ? 0 : BC.val(b.h, tk, 'sold'), hi: g ? 0 : BC.val(b.h, tk, 'sold', 'hi'),
         ask: g ? 0 : BC.val(b.h, tk, 'ask'), soldTxt: g ? 'no comps' : fr(sold)
       };
@@ -153,6 +153,7 @@
     var para = [
       'Ownership|We read every inscription held by this address from the Ordinals Wallet index. Only valid bitmaps count: the first "N.bitmap" inscribed for each block. Later copies of the same block number are not bitmaps and are excluded.',
       'Traits|Each bitmap is classified by year and block-number rarity (sub-1K, 4- and 5-digit 2009) and by special traits: Patoshi blocks mined by Satoshi, pizza blocks, and punk-shaped blocks.',
+      'Digital matter|' + (function () { var n = C.items.filter(function (i) { return i.matter.length; }).length; return n + ' of ' + C.items.length + ' bitmaps carry at least one Digital Matter World pattern (' + (BC.MATTER_AS_OF || '') + ' pattern list), read from each block\'s height, nonce and difficulty bits. Holders who link a bitmap there earn 15% of every mint from its block. Matter is listed in the inventory but does not change prices until sales show a premium.'; })(),
       'Pricing|Each bitmap is assigned to one tier, in this order: sub-1K, pizza, 2009 4-digit, 2009 5-digit, punks, then plain by year. It is priced at what that tier actually did on Satflow during the week shown: the top standing bid (what you could sell for now), recent sales, and the cheapest listing.',
       'Limits|These are tier prices, not offers on your exact blocks. Where a tier has no reliable bid or ask, we use the plain tier for the block\'s year. Patoshi blocks outside sub-1K are flagged but not given a premium, because there are too few sales to price one. Prices move; check a live marketplace before you trade.'
     ];
@@ -176,7 +177,7 @@
     }));
     y = doc.lastAutoTable.finalY + 18;
     doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor.apply(doc, MUTE);
-    var disc = doc.splitTextToSize('Sources: Satflow (sales, bids, listings); Ordinals Wallet index (ownership, traits); mempool.space (BTC/USD). This report is an informational estimate, not financial, tax or legal advice, and not an offer to buy or sell. BitmapComps does not hold or move any assets and never asks you to connect a wallet or sign anything.', W - 2 * M);
+    var disc = doc.splitTextToSize('Sources: Satflow (sales, bids, listings); Ordinals Wallet index (ownership, traits); mempool.space (BTC/USD, block headers); Digital Matter World (pattern list). This report is an informational estimate, not financial, tax or legal advice, and not an offer to buy or sell. BitmapComps does not hold or move any assets and never asks you to connect a wallet or sign anything.', W - 2 * M);
     doc.text(disc, M, y);
 
     // ---- Page 3+: inventory
@@ -188,7 +189,7 @@
       startY: 94,
       styles: Object.assign({}, tableStyle.styles, { fontSize: 7.8, cellPadding: { top: 2.4, bottom: 2.4, left: 5, right: 5 } }),
       head: [['#', 'Bitmap', 'Year', 'Priced as', 'Traits', 'Top bid', 'Recent sales', 'Cheapest ask']],
-      body: C.items.map(function (i, n) { return [n + 1, i.h + '.bitmap', i.year, T[i.tk].name, i.traits.join(', '), i.tk === 'genesis' ? '—' : f(i.bid), i.soldTxt, i.tk === 'genesis' ? '—' : f(i.ask)]; }),
+      body: C.items.map(function (i, n) { return [n + 1, i.h + '.bitmap', i.year, T[i.tk].name, i.traits.concat(i.matter.length ? ['Matter: ' + i.matter.join(', ')] : []).join(', '), i.tk === 'genesis' ? '—' : f(i.bid), i.soldTxt, i.tk === 'genesis' ? '—' : f(i.ask)]; }),
       columnStyles: { 0: { textColor: MUTE, halign: 'right', cellWidth: 26 }, 1: { fontStyle: 'bold' }, 5: { halign: 'right', font: 'courier' }, 6: { halign: 'right', font: 'courier' }, 7: { halign: 'right', font: 'courier' } },
       didParseCell: function (h) { if (h.section === 'body' && h.row.index % 2 === 1) h.cell.styles.fillColor = [249, 247, 243]; }
     }));
