@@ -378,12 +378,13 @@ function val(h,tk,col,pick){var T=TIERS[tk],B=TIERS[baseTier(h)],r=T[col];
  if(!r)return 0;return pick==='hi'?(r[1]||r[0]):r[0]}
 function sumFmt(x){return x>=0.01?x.toFixed(3):x.toFixed(4)}
 function usdOf(x){return usd?'≈ $'+Math.round(x*usd).toLocaleString():''}
-// ---------- Digital matter (Digital Matter World patterns, snapshot Nov 1, 2026) ----------
+// ---------- Digital matter (Digital Matter World patterns, snapshot Nov 1, 2026, 26 patterns). Refresh from dmtworld.tap-protocol.com/patterns with each weekly price update ----------
 // Each pattern is a regex on one block-header field: h = height (decimal), n = nonce (decimal), b = difficulty bits (hex).
 // "Natural" (any digit in the bits) is left out: nearly every block has it.
-var MATTER_AS_OF='Nov 1, 2026',MATTER_FOUND=20;
+var MATTER_AS_OF='Nov 1, 2026',MATTER_FOUND=26;
 var MATTER_PATS=[
- ['Pizza','h',/57043/],['Centuryblock','h',/0{5}$/],['Milestone','h',/0{3}$/],['Nullspar','h',/0{4}/],
+ ['Pizza','h',/57043/],['Piday','h',/31415/],['Nice','h',/69420/],
+ ['Straight','n',/123456/],['Sixofakind','n',/1{6}|2{6}|3{6}|4{6}/],['Skyglass','n',/^[5-9]{9}$/],['Pebble','n',/^[0-9]{1,6}$/],['Centuryblock','h',/0{5}$/],['Milestone','h',/0{3}$/],['Nullspar','h',/0{4}/],
  ['Nicenonce','n',/69420/],['Pimatter','n',/^31415/],['Pinonce','n',/31415/],['Ninefold','n',/9{5}/],['Voidcore','n',/0{5}/],
  ['Groundstate','n',/^[0-9]{1,5}$/],['Lowtide','n',/^[0-4]{10}$/],['Evenstone','n',/^[2468]{9,10}$/],['Oddstone','n',/^[13579]{10}$/],
  ['Luckyeights','n',/8{4}/],['Florite','n',/0123/],['Jackpot','n',/7{3}/],['Nonceendzero','n',/00$/],['Muffinite','n',/^3[0-4]/],
